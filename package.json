@@ -1,0 +1,32 @@
+{
+	"name": "esbuild-plugin-tailwindcss",
+	"version": "0.0.1",
+	"description": "Esbuild plugin for TailwindCSS",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"type": "module",
+	"private": false,
+	"author": "ttempaa <ttempaa.mt@gmail.com>",
+	"license": "MIT",
+	"homepage": "https://github.com/ttempaa/esbuild-plugin-tailwindcss",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ttempaa/esbuild-plugin-tailwindcss.git"
+	},
+	"keywords": ["esbuild", "plugin", "esbuild-plugin", "tailwindcss"],
+	"scripts": {
+		"build": "tsc",
+		"install": "tsc",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@types/node": "^18.11.18",
+		"autoprefixer": "^10.4.13",
+		"postcss": "^8.4.21",
+		"tailwindcss": "^3.2.4"
+	},
+	"devDependencies": {
+		"esbuild": "^0.17.4",
+		"typescript": "^4.9.4"
+	}
+}

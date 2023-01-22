@@ -1,0 +1,20 @@
+{
+	"include": ["source/**/*.ts"],
+	"exclude": ["node_modules", "dist"],
+	"compilerOptions": {
+		"baseUrl": ".",
+		"target": "es2020",
+		"module": "es2020",
+		"rootDir": "source",
+		"outDir": "dist",
+		"lib": ["es2020"],
+		"types": ["node"],
+		"moduleResolution": "node",
+		"strict": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"declaration": true,
+		"sourceMap": true
+	}
+}
