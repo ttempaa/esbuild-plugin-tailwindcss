@@ -1,9 +1,10 @@
 {
 	"name": "esbuild-plugin-tailwindcss",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Esbuild plugin for TailwindCSS",
-	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
 	"type": "module",
 	"private": false,
 	"author": "ttempaa <ttempaa.mt@gmail.com>",
@@ -14,19 +15,29 @@
 		"url": "https://github.com/ttempaa/esbuild-plugin-tailwindcss.git"
 	},
 	"keywords": ["esbuild", "plugin", "esbuild-plugin", "tailwindcss"],
+	"files": ["dist"],
 	"scripts": {
-		"build": "tsc",
-		"install": "tsc",
-		"dependencies": "tsc",
+		"build": "tsup",
+		"prepublishOnly": "yarn typecheck && yarn build",
 		"typecheck": "tsc --noEmit"
 	},
-	"dependencies": {
-		"@types/node": "^18.11.18",
-		"autoprefixer": "^10.4.13",
-		"esbuild": "^0.17.4",
-		"postcss": "^8.4.21",
-		"tailwindcss": "^3.2.4",
-		"typescript": "^4.9.4"
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"require": "./dist/index.cjs",
+			"import": "./dist/index.js",
+			"default": "./dist/index.js"
+		}
 	},
-	"devDependencies": {}
+	"dependencies": {
+		"autoprefixer": "^10.4.13",
+		"postcss": "^8.4.21",
+		"tailwindcss": "^3.2.4"
+	},
+	"devDependencies": {
+		"@types/node": "^18.11.18",
+		"esbuild": "^0.17.4",
+		"tsup": "^6.5.0",
+		"typescript": "^4.9.4"
+	}
 }
