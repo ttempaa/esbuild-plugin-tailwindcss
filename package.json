@@ -1,6 +1,6 @@
 {
 	"name": "esbuild-plugin-tailwindcss",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Esbuild plugin for TailwindCSS",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
@@ -17,16 +17,16 @@
 	"scripts": {
 		"build": "tsc",
 		"install": "tsc",
+		"dependencies": "tsc",
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
 		"@types/node": "^18.11.18",
 		"autoprefixer": "^10.4.13",
-		"postcss": "^8.4.21",
-		"tailwindcss": "^3.2.4"
-	},
-	"devDependencies": {
 		"esbuild": "^0.17.4",
+		"postcss": "^8.4.21",
+		"tailwindcss": "^3.2.4",
 		"typescript": "^4.9.4"
-	}
+	},
+	"devDependencies": {}
 }
