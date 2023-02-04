@@ -11,7 +11,7 @@ export const getSetup =
 		let onLoadCSS = async (args: OnLoadArgs): Promise<OnLoadResult> => {
 			let source = await fs.readFile(args.path, 'utf8');
 			let { default: tailwindConfig } = await import(configPath);
-			let { css } = postcss([
+			let { css } = await postcss([
 				tailwindcss(tailwindConfig),
 				autoprefixer,
 				...postcssPlugins,
