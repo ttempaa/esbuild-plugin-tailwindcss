@@ -5,12 +5,16 @@ import { getSetup } from './setup.js';
 
 const dirname: string = process.cwd();
 
-const tailwindPlugin = ({
-	configPath = path.resolve(dirname, 'tailwind.config.js'),
-}: TailwindPluginOptions = {}): Plugin => {
+const defaultOptions: TailwindPluginOptions = {
+	configPath: path.resolve(dirname, 'tailwind.config.js'),
+	postcssPlugins: [],
+};
+
+const tailwindPlugin = (options: Partial<TailwindPluginOptions> = {}): Plugin => {
+	options = Object.assign(defaultOptions, options);
 	return {
 		name: 'tailwindcss',
-		setup: getSetup(configPath),
+		setup: getSetup(options as TailwindPluginOptions),
 	};
 };
 

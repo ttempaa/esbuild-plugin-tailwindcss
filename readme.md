@@ -26,7 +26,7 @@ import { tailwindPlugin } from 'esbuild-plugin-tailwindcss';
 esbuild.build({
   plugins: [
     tailwindPlugin({
-      // configPath: 'path/to/tailwind.config.js',
+      // options
     }),
   ],
 });
@@ -58,3 +58,15 @@ import './index.css';
 ```
 
 Done, you can use the TailwindCSS in the project!
+
+## Options
+
+### `configPath`
+
+Type: _string_
+Default: _root of the project_
+
+### `postcssPlugins`
+
+Type: _PostcssPlugin[]_
+Default: _[]_
