@@ -61,12 +61,12 @@ Done, you can use the TailwindCSS in the project!
 
 ## Options
 
-### `configPath`
+#### `configPath`
 
-Type: _string_
+Type: _string_\
 Default: _root of the project_
 
-### `postcssPlugins`
+#### `postcssPlugins`
 
-Type: _PostcssPlugin[]_
+Type: _PostcssPlugin[]_\
 Default: _[]_
