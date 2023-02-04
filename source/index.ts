@@ -5,7 +5,7 @@ import { getSetup } from './setup.js';
 
 const dirname: string = process.cwd();
 
-export const tailwindPlugin = ({
+const tailwindPlugin = ({
 	configPath = path.resolve(dirname, 'tailwind.config.js'),
 }: TailwindPluginOptions = {}): Plugin => {
 	return {
@@ -13,3 +13,6 @@ export const tailwindPlugin = ({
 		setup: getSetup(configPath),
 	};
 };
+
+export { tailwindPlugin };
+export default tailwindPlugin;
