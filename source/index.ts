@@ -8,6 +8,9 @@ const dirname: string = process.cwd();
 const defaultOptions: TailwindPluginOptions = {
 	configPath: path.resolve(dirname, 'tailwind.config.js'),
 	postcssPlugins: [],
+	cssModulesEnabled: false,
+	cssModulesExcludePaths: [],
+	cssModulesFilter: /\.module\.css$/i,
 };
 
 const tailwindPlugin = (options: Partial<TailwindPluginOptions> = {}): Plugin => {

@@ -16,7 +16,7 @@ or
 npm i -D esbuild-plugin-tailwindcss
 ```
 
-## Usage
+## Basic usage
 
 Add plugin in build config:
 
@@ -61,12 +61,41 @@ Done, you can use the TailwindCSS in the project!
 
 ## Options
 
-#### `configPath`
+| Name                   | Type            | Default            | Description                                                       |
+| ---------------------- | --------------- | ------------------ | ----------------------------------------------------------------- |
+| configPath             | string          | process.cwd()      | Indicates the custom location of the TailwindCSS config           |
+| postcssPlugins         | PostcssPlugin[] | []                 | Adds custom plugins to the postcss handler                        |
+| cssModulesEnabled      | boolean         | false              | Enables processing of css modules                                 |
+| cssModulesFilter       | RegExp          | /\\.module\\.css$/ | Sets a template for detecting css modules                         |
+| cssModulesExcludePaths | RegExp[]        | []                 | Sets paths and files that should not be processing as css modules |
 
-Type: _string_\
-Default: _root of the project_
+## CSS Modules
 
-#### `postcssPlugins`
+If the `cssModulesEnabled` option is `true`, you can use css modules with TailwindCSS. For example:
 
-Type: _PostcssPlugin[]_\
-Default: _[]_
+File `button.module.css`:
+
+```css
+.button {
+  @apply px-4 px-2 border-2 rounded;
+  background: #faf;
+}
+```
+
+File `button.jsx`:
+
+```jsx
+import styles from './button.module.css';
+
+export const Button = ({ label }) => {
+  return <button className={styles.button}>{label}</button>;
+};
+```
+
+Note: to make css modules work more correctly, add the `index.css` file (or any of your css file where you use: _@import "tailwind/\*"_) to the `cssModulesExcludePaths` option:
+
+```js
+tailwindPlugin({
+  cssModulesExcludePaths: ['index.css']
+}),
+```

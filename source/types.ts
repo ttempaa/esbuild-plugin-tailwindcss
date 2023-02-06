@@ -1,6 +1,9 @@
-import { Plugin } from 'postcss';
+import { AcceptedPlugin as PostcssPlugin } from 'postcss';
 
 export interface TailwindPluginOptions {
 	configPath: string;
-	postcssPlugins: Plugin[];
+	postcssPlugins: PostcssPlugin[];
+	cssModulesEnabled: boolean;
+	cssModulesFilter: RegExp;
+	cssModulesExcludePaths: RegExp[];
 }
