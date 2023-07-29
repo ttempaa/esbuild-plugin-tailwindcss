@@ -1,18 +1,12 @@
-import {
-	OnLoadArgs,
-	OnLoadResult,
-	OnResolveArgs,
-	OnResolveResult,
-	PluginBuild,
-} from 'esbuild';
+import autoprefixer from 'autoprefixer';
+import { OnLoadArgs, OnLoadResult, OnResolveArgs, OnResolveResult, PluginBuild } from 'esbuild';
 import fs from 'fs/promises';
 import path from 'path';
 import postcss, { AcceptedPlugin as PostcssPlugin } from 'postcss';
-import autoprefixer from 'autoprefixer';
-import tailwindcss from 'tailwindcss';
 import PostcssModulesPlugin from 'postcss-modules';
-import { TailwindPluginOptions } from './types';
+import tailwindcss from 'tailwindcss';
 import { getHash } from './functions/getHash';
+import { TailwindPluginOptions } from './types';
 
 export const getSetup =
 	({
@@ -22,13 +16,14 @@ export const getSetup =
 		cssModulesFilter,
 		cssModulesExcludePaths,
 	}: TailwindPluginOptions) =>
-	(build: PluginBuild) => {
+	async (build: PluginBuild) => {
 		let cache: Map<string, string | object> = new Map();
 		let namespace: string = 'tailwind-css-module';
+		if (process.platform === 'win32') configPath = `file://${configPath}`;
+		let { default: tailwindConfig } = await import(configPath);
 		let onLoadCSS = async (args: OnLoadArgs): Promise<OnLoadResult> => {
 			let fileName: string = path.basename(args.path);
 			let isCssModule: boolean = cssModulesEnabled && cssModulesFilter.test(fileName);
-			let { default: tailwindConfig } = await import(configPath);
 			let postcssPlugins: PostcssPlugin[] = [
 				tailwindcss(tailwindConfig),
 				autoprefixer,
@@ -43,7 +38,9 @@ export const getSetup =
 				);
 			}
 			let source = await fs.readFile(args.path, 'utf8');
-			let { css } = await postcss(postcssPlugins).process(source, { from: args.path });
+			let { css } = await postcss(postcssPlugins).process(source, {
+				from: args.path,
+			});
 			if (!isCssModule) return { contents: css, loader: 'css' };
 			let importHash: string = getHash(args.path);
 			let importPath: string = `${namespace}://${importHash}`;
