@@ -4,6 +4,5 @@ export const loadConfig = async (configPath: string) => {
 	let hasFilePrefix = configPath.startsWith('file://');
 	if (isWindows && isESM && hasFilePrefix) configPath = `file://${configPath}`;
 	let imported = await import(configPath);
-	if (isESM) return imported.default;
 	return isESM ? imported.default : imported;
 };
