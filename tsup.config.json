@@ -4,5 +4,6 @@
 	"splitting": true,
 	"sourcemap": false,
 	"clean": true,
-	"dts": true
+	"dts": true,
+	"minify": true
 }

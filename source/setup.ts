@@ -6,6 +6,7 @@ import postcss, { AcceptedPlugin as PostcssPlugin } from 'postcss';
 import PostcssModulesPlugin from 'postcss-modules';
 import tailwindcss from 'tailwindcss';
 import { getHash } from './functions/getHash';
+import { loadConfig } from './functions/loadConfig';
 import { TailwindPluginOptions } from './types';
 
 export const getSetup =
@@ -19,8 +20,7 @@ export const getSetup =
 	async (build: PluginBuild) => {
 		let cache: Map<string, string | object> = new Map();
 		let namespace: string = 'tailwind-css-module';
-		if (process.platform === 'win32') configPath = `file://${configPath}`;
-		let { default: tailwindConfig } = await import(configPath);
+		let tailwindConfig = await loadConfig(configPath);
 		let onLoadCSS = async (args: OnLoadArgs): Promise<OnLoadResult> => {
 			let fileName: string = path.basename(args.path);
 			let isCssModule: boolean = cssModulesEnabled && cssModulesFilter.test(fileName);
