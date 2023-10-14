@@ -2,8 +2,6 @@
 
 Just a module to simplify the connection of TailwindCSS
 
----
-
 ## Install
 
 ```shell
@@ -35,7 +33,7 @@ esbuild.build({
 Create file `tailwind.config.js` at the root of the project:
 
 ```js
-export default {
+module.export = {
   content: ['./source/**/*.{js,jsx,ts,tsx}'],
   // ...
   // The rest of the tailwindcss configuration
@@ -63,7 +61,7 @@ Done, you can use the TailwindCSS in the project!
 
 | Name                   | Type            | Default            | Description                                                       |
 | ---------------------- | --------------- | ------------------ | ----------------------------------------------------------------- |
-| configPath             | string          | process.cwd()      | Indicates the custom location of the TailwindCSS config           |
+| configPath             | string          | tailwind.config.js | Indicates the custom location of the TailwindCSS config           |
 | postcssPlugins         | PostcssPlugin[] | []                 | Adds custom plugins to the postcss handler                        |
 | cssModulesEnabled      | boolean         | false              | Enables processing of css modules                                 |
 | cssModulesFilter       | RegExp          | /\\.module\\.css$/ | Sets a template for detecting css modules                         |
