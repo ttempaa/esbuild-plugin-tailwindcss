@@ -33,7 +33,7 @@ esbuild.build({
 Create file `tailwind.config.js` at the root of the project:
 
 ```js
-module.export = {
+module.exports = {
   content: ['./source/**/*.{js,jsx,ts,tsx}'],
   // ...
   // The rest of the tailwindcss configuration
