@@ -59,13 +59,26 @@ Done, you can use the TailwindCSS in the project!
 
 ## Options
 
-| Name                   | Type            | Default            | Description                                                       |
-| ---------------------- | --------------- | ------------------ | ----------------------------------------------------------------- |
-| configPath             | string          | tailwind.config.js | Indicates the custom location of the TailwindCSS config           |
-| postcssPlugins         | PostcssPlugin[] | []                 | Adds custom plugins to the postcss handler                        |
-| cssModulesEnabled      | boolean         | false              | Enables processing of css modules                                 |
-| cssModulesFilter       | RegExp          | /\\.module\\.css$/ | Sets a template for detecting css modules                         |
-| cssModulesExcludePaths | RegExp[]        | []                 | Sets paths and files that should not be processing as css modules |
+| Name                   | Type                                     | Default            | Description                                                       |
+| ---------------------- | ---------------------------------------- | ------------------ | ----------------------------------------------------------------- |
+| configPath             | string                                   | tailwind.config.js | Indicates the custom location of the TailwindCSS config           |
+| postcssPlugins         | (PostcssPlugin \| PostcssPluginConfig)[] | []                 | Adds custom plugins to the postcss handler                        |
+| cssModulesEnabled      | boolean                                  | false              | Enables processing of css modules                                 |
+| cssModulesFilter       | RegExp                                   | /\\.module\\.css$/ | Sets a template for detecting css modules                         |
+| cssModulesExcludePaths | RegExp[]                                 | []                 | Sets paths and files that should not be processing as css modules |
+
+## PostCSS plugins
+
+Tailwind and autoprefixer are already used by default.
+Other plugins can be used as plain imports (e.g. `require("postcss-import")`) or as a config object.
+Plugins are appended by default, but you can choose to prepend them based on your use case using the config object:
+
+### Plugin config object
+
+| Name                   | Type                                    | Default            | Description                                                                       |
+| ---------------------- | --------------------------------------- | ------------------ | --------------------------------------------------------------------------------- |
+| plugin                 | PostcssPlugin                           | -                  | **Mandatory**. The plugin itself, for example `require("postcss-import")`         |
+| prepend                | boolean                                 | false              | Prepends the plugin instead of appending it after tailwind and autoprefixer       |
 
 ## CSS Modules
 
