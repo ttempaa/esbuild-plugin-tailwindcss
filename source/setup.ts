@@ -7,7 +7,7 @@ import PostcssModulesPlugin from 'postcss-modules';
 import tailwindcss from 'tailwindcss';
 import { getHash } from './functions/getHash';
 import { loadConfig } from './functions/loadConfig';
-import { TailwindPluginOptions } from './types';
+import { PostcssPluginConfig, TailwindPluginOptions } from './types';
 
 export const getSetup =
 	({
@@ -24,10 +24,28 @@ export const getSetup =
 		let onLoadCSS = async (args: OnLoadArgs): Promise<OnLoadResult> => {
 			let fileName: string = path.basename(args.path);
 			let isCssModule: boolean = cssModulesEnabled && cssModulesFilter.test(fileName);
+
+			const pluginsToPrepend: PostcssPlugin[] = [];
+			const pluginsToAppend: PostcssPlugin[] = [];
+			postcssUserPlugins.forEach((plugin) => {
+				const isConfig = typeof plugin === 'object' && (plugin as PostcssPluginConfig).plugin;
+				if (isConfig) {
+					const config = plugin as PostcssPluginConfig;
+					if (config.prepend) {
+						pluginsToPrepend.push(config.plugin);
+					} else {
+						pluginsToAppend.push(config.plugin);
+					}
+				} else {
+					pluginsToAppend.push(plugin as PostcssPlugin);
+				}
+			})
+
 			let postcssPlugins: PostcssPlugin[] = [
+				...pluginsToPrepend,
 				tailwindcss(tailwindConfig),
 				autoprefixer,
-				...postcssUserPlugins,
+				...pluginsToAppend,
 			];
 			if (isCssModule) {
 				postcssPlugins.push(
