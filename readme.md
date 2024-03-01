@@ -2,6 +2,10 @@
 
 Just a module to simplify the connection of TailwindCSS
 
+[![npm](https://img.shields.io/npm/v/esbuild-plugin-tailwindcss.svg)](https://www.npmjs.com/package/esbuild-plugin-tailwindcss)
+[![npm](https://img.shields.io/npm/dt/esbuild-plugin-tailwindcss.svg)](https://www.npmjs.com/package/esbuild-plugin-tailwindcss)
+[![npm](https://img.shields.io/npm/l/esbuild-plugin-tailwindcss.svg)](https://www.npmjs.com/package/esbuild-plugin-tailwindcss)
+
 ## Install
 
 ```shell
@@ -15,6 +19,8 @@ npm i -D esbuild-plugin-tailwindcss
 ```
 
 ## Basic usage
+
+_\* This module can be imported as ESM or CJS. The examples below use the ESM syntax._
 
 Add plugin in build config:
 
@@ -33,7 +39,7 @@ esbuild.build({
 Create file `tailwind.config.js` at the root of the project:
 
 ```js
-module.exports = {
+export default {
   content: ['./source/**/*.{js,jsx,ts,tsx}'],
   // ...
   // The rest of the tailwindcss configuration
@@ -75,10 +81,10 @@ Plugins are appended by default, but you can choose to prepend them based on you
 
 ### Plugin config object
 
-| Name                   | Type                                    | Default            | Description                                                                       |
-| ---------------------- | --------------------------------------- | ------------------ | --------------------------------------------------------------------------------- |
-| plugin                 | PostcssPlugin                           | -                  | **Mandatory**. The plugin itself, for example `require("postcss-import")`         |
-| prepend                | boolean                                 | false              | Prepends the plugin instead of appending it after tailwind and autoprefixer       |
+| Name    | Type          | Default | Description                                                                 |
+| ------- | ------------- | ------- | --------------------------------------------------------------------------- |
+| plugin  | PostcssPlugin | -       | **Mandatory**. The plugin itself, for example `require("postcss-import")`   |
+| prepend | boolean       | false   | Prepends the plugin instead of appending it after tailwind and autoprefixer |
 
 ## CSS Modules
 
