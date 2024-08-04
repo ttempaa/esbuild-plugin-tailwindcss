@@ -1,4 +1,4 @@
-import { AcceptedPlugin as PostcssPlugin } from 'postcss';
+import type { AcceptedPlugin as PostcssPlugin } from 'postcss';
 
 export interface PostcssPluginConfig {
 	plugin: PostcssPlugin;

@@ -1,12 +1,18 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
 import autoprefixer from 'autoprefixer';
-import { OnLoadArgs, OnLoadResult, OnResolveArgs, OnResolveResult, PluginBuild } from 'esbuild';
-import fs from 'fs/promises';
-import path from 'path';
-import postcss, { AcceptedPlugin as PostcssPlugin } from 'postcss';
+import type {
+	OnLoadArgs,
+	OnLoadResult,
+	OnResolveArgs,
+	OnResolveResult,
+	PluginBuild,
+} from 'esbuild';
+import postcss, { type AcceptedPlugin as PostcssPlugin } from 'postcss';
 import PostcssModulesPlugin from 'postcss-modules';
 import tailwindcss from 'tailwindcss';
 import { getHash } from './functions/getHash';
-import { PostcssPluginConfig, TailwindPluginOptions } from './types';
+import type { PostcssPluginConfig, TailwindPluginOptions } from './types';
 
 export const getSetup =
 	({
@@ -17,16 +23,18 @@ export const getSetup =
 		cssModulesExcludePaths,
 	}: TailwindPluginOptions) =>
 	async (build: PluginBuild) => {
-		let cache: Map<string, string | object> = new Map();
-		let namespace: string = 'tailwind-css-module';
-		let onLoadCSS = async (args: OnLoadArgs): Promise<OnLoadResult> => {
-			let fileName: string = path.basename(args.path);
-			let isCssModule: boolean = cssModulesEnabled && cssModulesFilter.test(fileName);
+		const cache: Map<string, string | object> = new Map();
+		const namespace = 'tailwind-css-module';
+		const onLoadCSS = async (args: OnLoadArgs): Promise<OnLoadResult> => {
+			const fileName: string = path.basename(args.path);
+			const isCssModule: boolean =
+				cssModulesEnabled && cssModulesFilter.test(fileName);
 
 			const pluginsToPrepend: PostcssPlugin[] = [];
 			const pluginsToAppend: PostcssPlugin[] = [];
-			postcssUserPlugins.forEach((plugin) => {
-				const isConfig = typeof plugin === 'object' && (plugin as PostcssPluginConfig).plugin;
+			for (const plugin of postcssUserPlugins) {
+				const isConfig =
+					typeof plugin === 'object' && (plugin as PostcssPluginConfig).plugin;
 				if (isConfig) {
 					const config = plugin as PostcssPluginConfig;
 					if (config.prepend) {
@@ -37,9 +45,9 @@ export const getSetup =
 				} else {
 					pluginsToAppend.push(plugin as PostcssPlugin);
 				}
-			})
+			}
 
-			let postcssPlugins: PostcssPlugin[] = [
+			const postcssPlugins: PostcssPlugin[] = [
 				...pluginsToPrepend,
 				tailwindcss(configPath),
 				autoprefixer,
@@ -50,30 +58,33 @@ export const getSetup =
 					PostcssModulesPlugin({
 						globalModulePaths: cssModulesExcludePaths,
 						getJSON: (_, classes) => cache.set(args.path, classes),
-					})
+					}),
 				);
 			}
-			let source = await fs.readFile(args.path, 'utf8');
-			let { css } = await postcss(postcssPlugins).process(source, {
+			const source = await fs.readFile(args.path, 'utf8');
+			const { css } = await postcss(postcssPlugins).process(source, {
 				from: args.path,
 			});
 			if (!isCssModule) return { contents: css, loader: 'css' };
-			let importHash: string = getHash(args.path);
-			let importPath: string = `${namespace}://${importHash}`;
-			let classes: string = JSON.stringify(cache.get(args.path));
-			let contents: string = `import "${importPath}"; export default ${classes};`;
+			const importHash: string = getHash(args.path);
+			const importPath = `${namespace}://${importHash}`;
+			const classes: string = JSON.stringify(cache.get(args.path));
+			const contents = `import "${importPath}"; export default ${classes};`;
 			cache.set(importPath, css);
 			return { contents, loader: 'js' };
 		};
-		let onLoadCSSModule = (args: OnLoadArgs): OnLoadResult => ({
+		const onLoadCSSModule = (args: OnLoadArgs): OnLoadResult => ({
 			contents: cache.get(args.path)?.toString(),
 			loader: 'css',
 		});
-		let onResolveCSSModule = (args: OnResolveArgs): OnResolveResult => ({
+		const onResolveCSSModule = (args: OnResolveArgs): OnResolveResult => ({
 			path: args.path,
 			namespace,
 		});
 		build.onLoad({ filter: /\.css$/ }, onLoadCSS);
 		build.onLoad({ filter: /.*/, namespace }, onLoadCSSModule);
-		build.onResolve({ filter: new RegExp(`^${namespace}://`) }, onResolveCSSModule);
+		build.onResolve(
+			{ filter: new RegExp(`^${namespace}://`) },
+			onResolveCSSModule,
+		);
 	};

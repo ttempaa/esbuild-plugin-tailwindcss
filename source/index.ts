@@ -1,6 +1,6 @@
-import { Plugin } from 'esbuild';
-import { TailwindPluginOptions } from './types.js';
+import type { Plugin } from 'esbuild';
 import { getSetup } from './setup.js';
+import type { TailwindPluginOptions } from './types.js';
 
 const defaultOptions: TailwindPluginOptions = {
 	configPath: undefined,
@@ -10,11 +10,15 @@ const defaultOptions: TailwindPluginOptions = {
 	cssModulesFilter: /\.module\.css$/i,
 };
 
-const tailwindPlugin = (options: Partial<TailwindPluginOptions> = {}): Plugin => {
-	options = Object.assign(defaultOptions, options);
+const tailwindPlugin = (
+	options: Partial<TailwindPluginOptions> = {},
+): Plugin => {
 	return {
 		name: 'tailwindcss',
-		setup: getSetup(options as TailwindPluginOptions),
+		setup: getSetup({
+			...defaultOptions,
+			...options,
+		} as TailwindPluginOptions),
 	};
 };
 
