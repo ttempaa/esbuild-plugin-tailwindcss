@@ -6,7 +6,7 @@ export interface PostcssPluginConfig {
 }
 
 export interface TailwindPluginOptions {
-	configPath: string;
+	configPath: string | undefined;
 	postcssPlugins: (PostcssPlugin | PostcssPluginConfig)[];
 	cssModulesEnabled: boolean;
 	cssModulesFilter: RegExp;

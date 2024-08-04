@@ -67,7 +67,7 @@ Done, you can use the TailwindCSS in the project!
 
 | Name                   | Type                                     | Default            | Description                                                       |
 | ---------------------- | ---------------------------------------- | ------------------ | ----------------------------------------------------------------- |
-| configPath             | string                                   | tailwind.config.js | Indicates the custom location of the TailwindCSS config           |
+| configPath             | string \| undefined                      | undefined          | Indicates the custom location of the TailwindCSS config           |
 | postcssPlugins         | (PostcssPlugin \| PostcssPluginConfig)[] | []                 | Adds custom plugins to the postcss handler                        |
 | cssModulesEnabled      | boolean                                  | false              | Enables processing of css modules                                 |
 | cssModulesFilter       | RegExp                                   | /\\.module\\.css$/ | Sets a template for detecting css modules                         |
