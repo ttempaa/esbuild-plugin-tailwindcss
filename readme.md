@@ -1,22 +1,21 @@
 # esbuild-plugin-tailwindcss
 
-Just a module to simplify the connection of TailwindCSS
+Just a [esbuild](https://esbuild.github.io/) plugin to simplify the connection of [TailwindCSS](https://tailwindcss.com).
 
 [![npm](https://img.shields.io/npm/v/esbuild-plugin-tailwindcss.svg)](https://www.npmjs.com/package/esbuild-plugin-tailwindcss)
 [![npm](https://img.shields.io/npm/dt/esbuild-plugin-tailwindcss.svg)](https://www.npmjs.com/package/esbuild-plugin-tailwindcss)
 [![npm](https://img.shields.io/npm/l/esbuild-plugin-tailwindcss.svg)](https://www.npmjs.com/package/esbuild-plugin-tailwindcss)
 
+> [!NOTE]
+> This version (2.x) works with TailwindCSS v4. If you need TailwindCSS v3, use the 1.x version of this plugin.
+
 ## Install
 
-```shell
-yarn add -D esbuild-plugin-tailwindcss
-```
-
-or
-
-```shell
-npm i -D esbuild-plugin-tailwindcss
-```
+| Package manager | Command                                  |
+| --------------- | ---------------------------------------- |
+| npm             | `npm i -D esbuild-plugin-tailwindcss`    |
+| yarn            | `yarn add -D esbuild-plugin-tailwindcss` |
+| bun             | `bun add -d esbuild-plugin-tailwindcss`  |
 
 ## Basic usage
 
@@ -25,76 +24,55 @@ _\* This module can be imported as ESM or CJS. The examples below use the ESM sy
 Add plugin in build config:
 
 ```js
-import { tailwindPlugin } from 'esbuild-plugin-tailwindcss';
+import esbuild from 'esbuild';
+import tailwindPlugin from 'esbuild-plugin-tailwindcss';
 
 esbuild.build({
+  entryPoints: ['src/index.js'],
+  outdir: 'dist',
+  bundle: true,
   plugins: [
-    tailwindPlugin({
-      // options
-    }),
+    // Add plugin
+    tailwindPlugin({ /* options */ }),
   ],
 });
 ```
 
-Create file `tailwind.config.js` at the root of the project:
-
-```js
-export default {
-  content: ['./source/**/*.{js,jsx,ts,tsx}'],
-  // ...
-  // The rest of the tailwindcss configuration
-  // For more, see: https://tailwindcss.com/docs/configuration
-};
-```
-
-Create file `index.css`:
+Add the `@import "tailwindcss"` import to your main CSS file.
 
 ```css
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+/* index.css */
+@import 'tailwindcss';
 ```
 
-Import `index.css` from `index.{js,jsx,ts,tsx}` file:
+Import `index.css` from your main `js`, `jsx`, `ts`, `tsx` file:
 
 ```js
+/* index.js */
 import './index.css';
 ```
 
-Done, you can use the TailwindCSS in the project!
+Done, you can use the TailwindCSS in the project! 
 
 ## Options
 
-| Name                   | Type                                     | Default            | Description                                                       |
-| ---------------------- | ---------------------------------------- | ------------------ | ----------------------------------------------------------------- |
-| configPath             | string \| undefined                      | undefined          | Indicates the custom location of the TailwindCSS config           |
-| postcssPlugins         | (PostcssPlugin \| PostcssPluginConfig)[] | []                 | Adds custom plugins to the postcss handler                        |
-| cssModulesEnabled      | boolean                                  | false              | Enables processing of css modules                                 |
-| cssModulesFilter       | RegExp                                   | /\\.module\\.css$/ | Sets a template for detecting css modules                         |
-| cssModulesExcludePaths | RegExp[]                                 | []                 | Sets paths and files that should not be processing as css modules |
-
-## PostCSS plugins
-
-Tailwind and autoprefixer are already used by default.
-Other plugins can be used as plain imports (e.g. `require("postcss-import")`) or as a config object.
-Plugins are appended by default, but you can choose to prepend them based on your use case using the config object:
-
-### Plugin config object
-
-| Name    | Type          | Default | Description                                                                 |
-| ------- | ------------- | ------- | --------------------------------------------------------------------------- |
-| plugin  | PostcssPlugin | -       | **Mandatory**. The plugin itself, for example `require("postcss-import")`   |
-| prepend | boolean       | false   | Prepends the plugin instead of appending it after tailwind and autoprefixer |
+| Name                     | Type              | Default            | Description                                                                                                                                                          |
+| ------------------------ | ----------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `postcssPlugins.prepend` | `PostcssPlugin[]` | `[]`               | Adds custom PostCSS plugins **before** TailwindCSS processing.                                                                                                       |
+| `postcssPlugins.append`  | `PostcssPlugin[]` | `[]`               | Adds custom PostCSS plugins **after** TailwindCSS processing.                                                                                                        |
+| `cssModules.enabled`     | `boolean`         | `false`            | Enables CSS Modules support. When enabled, class names are locally scoped by default, meaning they are unique to the component and won't conflict with other styles. |
+| `cssModules.filter`      | `RegExp`          | `/\.module\.css$/` | A regular expression to detect which files should be processed as CSS Modules.                                                                                       |
+| `cssModules.exclude`     | `RegExp[]`        | `[]`               | An array of regular expressions to exclude specific files or paths from CSS Modules processing.                                                                      |
 
 ## CSS Modules
 
-If the `cssModulesEnabled` option is `true`, you can use css modules with TailwindCSS. For example:
+If the `cssModules.enabled` option is `true`, you can use css modules with TailwindCSS. For example:
 
 File `button.module.css`:
 
 ```css
 .button {
-  @apply px-4 px-2 border-2 rounded;
+  @apply px-4 py-2 border-2 rounded;
   background: #faf;
 }
 ```
@@ -109,10 +87,38 @@ export const Button = ({ label }) => {
 };
 ```
 
-Note: to make css modules work more correctly, add the `index.css` file (or any of your css file where you use: _@import "tailwind/\*"_) to the `cssModulesExcludePaths` option:
+To make css modules work more correctly, add the main CSS file to the excludes:
 
 ```js
 tailwindPlugin({
-  cssModulesExcludePaths: ['index.css']
+  cssModules: {
+    enabled: true,
+    exclude: ['index.css']
+  }
 }),
+```
+
+## Type Definitions
+
+To avoid TypeScript errors when importing CSS, add the types to your global declaration file:
+
+```ts
+/* globals.d.ts */
+
+declare module '*.module.css' {
+  const classes: Record<string, string>;
+  export default classes;
+}
+```
+
+## Using with Bun
+
+Since Bun's bundler API is compatible with esbuild, this module can be used as a [Bun plugin](https://bun.sh/docs/bundler/plugins).
+
+```ts
+Bun.build({
+  plugins: [
+    tailwindPlugin({ /* pass plugin options here */ }),
+  ]
+})
 ```
