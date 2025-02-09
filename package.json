@@ -1,6 +1,6 @@
 {
 	"name": "esbuild-plugin-tailwindcss",
-	"version": "1.2.1",
+	"version": "1.2.2",
 	"description": "Esbuild plugin for TailwindCSS",
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.js",
@@ -14,15 +14,8 @@
 		"type": "git",
 		"url": "https://github.com/ttempaa/esbuild-plugin-tailwindcss.git"
 	},
-	"keywords": [
-		"esbuild",
-		"plugin",
-		"esbuild-plugin",
-		"tailwindcss"
-	],
-	"files": [
-		"dist"
-	],
+	"keywords": ["esbuild", "plugin", "esbuild-plugin", "tailwindcss"],
+	"files": ["dist"],
 	"scripts": {
 		"build": "tsup",
 		"lint": "biome check ./source",
