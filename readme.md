@@ -19,7 +19,7 @@ Just a [esbuild](https://esbuild.github.io/) plugin to simplify the connection o
 
 ## Basic usage
 
-_\* This module can be imported as ESM or CJS. The examples below use the ESM syntax._
+> This module can be imported as ESM or CJS. The examples below use the ESM syntax.
 
 Add plugin in build config:
 
@@ -32,7 +32,6 @@ esbuild.build({
   outdir: 'dist',
   bundle: true,
   plugins: [
-    // Add plugin
     tailwindPlugin({ /* options */ }),
   ],
 });
