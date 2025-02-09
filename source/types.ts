@@ -1,14 +1,25 @@
 import type { AcceptedPlugin as PostcssPlugin } from 'postcss';
 
-export interface PostcssPluginConfig {
-	plugin: PostcssPlugin;
-	prepend?: boolean;
-}
-
 export interface TailwindPluginOptions {
-	configPath: string | undefined;
-	postcssPlugins: (PostcssPlugin | PostcssPluginConfig)[];
-	cssModulesEnabled: boolean;
-	cssModulesFilter: RegExp;
-	cssModulesExcludePaths: RegExp[];
+	/**
+	 * Custom PostCSS plugins to prepend or append to the default plugin chain.
+	 */
+	postcssPlugins?: {
+		/** Plugins to add before Tailwind and Autoprefixer. */
+		prepend?: PostcssPlugin[];
+		/** Plugins to add after Tailwind and Autoprefixer. */
+		append?: PostcssPlugin[];
+	};
+
+	/**
+	 * CSS Modules configuration.
+	 */
+	cssModules?: {
+		/** Enable CSS Modules. Defaults to `true`. */
+		enabled?: boolean;
+		/** Regex to identify CSS Module files. Defaults to `/\.module\.css$/`. */
+		filter?: RegExp;
+		/** Regex patterns to exclude files from CSS Modules. */
+		exclude?: RegExp[];
+	};
 }

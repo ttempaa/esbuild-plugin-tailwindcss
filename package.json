@@ -15,19 +15,19 @@
 		"url": "https://github.com/ttempaa/esbuild-plugin-tailwindcss.git"
 	},
 	"keywords": [
+		"tailwindcss",
 		"esbuild",
-		"plugin",
 		"esbuild-plugin",
-		"tailwindcss"
+		"bun",
+		"bun-plugin",
+		"plugin"
 	],
-	"files": [
-		"dist"
-	],
+	"files": ["dist"],
 	"scripts": {
 		"build": "tsup",
 		"lint": "biome check ./source",
 		"lint:fix": "biome check --write ./source",
-		"prepublishOnly": "yarn typecheck && yarn build",
+		"prepublishOnly": "bun run typecheck && bun run build",
 		"typecheck": "tsc --noEmit"
 	},
 	"exports": {
@@ -39,16 +39,16 @@
 		}
 	},
 	"dependencies": {
-		"autoprefixer": "^10.4.13",
-		"postcss": "^8.4.21",
-		"postcss-modules": "^6.0.0",
-		"tailwindcss": "^3.2.4"
+		"@tailwindcss/postcss": "^4.0.5",
+		"autoprefixer": "^10.4.20",
+		"postcss": "^8.5.1",
+		"postcss-modules": "^6.0.1"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "1.8.3",
-		"@types/node": "^18.11.18",
-		"esbuild": "^0.19.4",
-		"tsup": "^7.2.0",
-		"typescript": "^5.2.2"
+		"@biomejs/biome": "1.9.4",
+		"@types/bun": "latest",
+		"esbuild": "^0.25.0",
+		"tsup": "^8.3.6",
+		"typescript": "^5.7.3"
 	}
 }
