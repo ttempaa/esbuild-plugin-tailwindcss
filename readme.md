@@ -1,10 +1,13 @@
 # esbuild-plugin-tailwindcss
 
-Just a module to simplify the connection of TailwindCSS
+Just a module to simplify the connection of TailwindCSS.
 
 [![npm](https://img.shields.io/npm/v/esbuild-plugin-tailwindcss.svg)](https://www.npmjs.com/package/esbuild-plugin-tailwindcss)
 [![npm](https://img.shields.io/npm/dt/esbuild-plugin-tailwindcss.svg)](https://www.npmjs.com/package/esbuild-plugin-tailwindcss)
 [![npm](https://img.shields.io/npm/l/esbuild-plugin-tailwindcss.svg)](https://www.npmjs.com/package/esbuild-plugin-tailwindcss)
+
+> [!NOTE]
+> This version (1.x) works with TailwindCSS v3. If you need TailwindCSS v4, use the 2.x version of this plugin.
 
 ## Install
 
@@ -94,7 +97,7 @@ File `button.module.css`:
 
 ```css
 .button {
-  @apply px-4 px-2 border-2 rounded;
+  @apply px-4 py-2 border-2 rounded;
   background: #faf;
 }
 ```
