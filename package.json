@@ -1,6 +1,6 @@
 {
 	"name": "esbuild-plugin-tailwindcss",
-	"version": "1.2.2",
+	"version": "1.2.3",
 	"description": "Esbuild plugin for TailwindCSS",
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.js",
