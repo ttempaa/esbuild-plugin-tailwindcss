@@ -15,7 +15,7 @@
 		"url": "https://github.com/ttempaa/esbuild-plugin-tailwindcss.git"
 	},
 	"keywords": ["esbuild", "plugin", "esbuild-plugin", "tailwindcss"],
-	"files": ["dist"],
+	"files": ["dist", "readme.md"],
 	"scripts": {
 		"build": "tsup",
 		"lint": "biome check ./source",
