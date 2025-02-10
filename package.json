@@ -22,7 +22,7 @@
 		"bun-plugin",
 		"plugin"
 	],
-	"files": ["dist"],
+	"files": ["dist", "readme.md"],
 	"scripts": {
 		"build": "tsup",
 		"lint": "biome check ./source",
