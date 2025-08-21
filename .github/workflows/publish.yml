@@ -1,0 +1,45 @@
+name: Publish to NPM
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Check version matches tag
+        if: github.event_name == 'release'
+        run: |
+          TAG_VERSION="${GITHUB_REF##*/}"
+          PKG_VERSION="v$(jq -r .version package.json)"
+          if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
+            echo "Version mismatch: tag=$TAG_VERSION, package.json=$PKG_VERSION"
+            exit 1
+          fi
+
+      - name: Run tests
+        run: bun test
+
+      - name: Type-check
+        run: bun typecheck
+
+      - name: Publish to NPM
+        env:
+          NPM_CONFIG_TOKEN: ${{ secrets.NPM_CONFIG_TOKEN }}
+        run: bun publish --access public
