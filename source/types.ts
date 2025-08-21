@@ -9,6 +9,8 @@ export interface TailwindPluginOptions {
 		prepend?: PostcssPlugin[];
 		/** Plugins to add after Tailwind and Autoprefixer. */
 		append?: PostcssPlugin[];
+		/** Disable applying the Autoprefixer plugin. Defaults to `false`. */
+		disableAutoprefixer?: boolean;
 	};
 
 	/**

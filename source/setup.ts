@@ -17,7 +17,7 @@ import type { TailwindPluginOptions } from './types';
 export const getSetup =
 	(options: TailwindPluginOptions) => (build: PluginBuild) => {
 		const {
-			postcssPlugins: userPostcssPlugins = {},
+			postcssPlugins = {},
 			cssModules: {
 				enabled: cssModulesEnabled = false,
 				filter: cssModulesFilter = /\.module\.css$/,
@@ -31,15 +31,15 @@ export const getSetup =
 		const onLoadCSS = async (args: OnLoadArgs): Promise<OnLoadResult> => {
 			const fileName = path.basename(args.path);
 			const isCssModule = cssModulesEnabled && cssModulesFilter.test(fileName);
-			const postcssPlugins: PostcssPlugin[] = [
-				...(userPostcssPlugins?.prepend || []),
+			const plugins: PostcssPlugin[] = [
+				...(postcssPlugins.prepend || []),
 				tailwindcss(),
-				autoprefixer(),
-				...(userPostcssPlugins?.append || []),
+				...(postcssPlugins.disableAutoprefixer ? [] : [autoprefixer()]),
+				...(postcssPlugins.append || []),
 			];
 
 			if (isCssModule) {
-				postcssPlugins.push(
+				plugins.push(
 					postcssModulesPlugin({
 						globalModulePaths: cssModulesExclude,
 						getJSON: (_, classes) => cache.set(args.path, classes),
@@ -48,7 +48,7 @@ export const getSetup =
 			}
 
 			const source = await fs.readFile(args.path, 'utf8');
-			const { css } = await postcss(postcssPlugins).process(source, {
+			const { css } = await postcss(plugins).process(source, {
 				from: args.path,
 			});
 
