@@ -24,15 +24,17 @@ Just a [esbuild](https://esbuild.github.io/) plugin to simplify the connection o
 Add plugin in build config:
 
 ```js
-import esbuild from 'esbuild';
-import tailwindPlugin from 'esbuild-plugin-tailwindcss';
+import esbuild from "esbuild";
+import tailwindPlugin from "esbuild-plugin-tailwindcss";
 
 esbuild.build({
-  entryPoints: ['src/index.js'],
-  outdir: 'dist',
+  entryPoints: ["src/index.js"],
+  outdir: "dist",
   bundle: true,
   plugins: [
-    tailwindPlugin({ /* options */ }),
+    tailwindPlugin({
+      /* options */
+    }),
   ],
 });
 ```
@@ -41,27 +43,28 @@ Add the `@import "tailwindcss"` import to your main CSS file.
 
 ```css
 /* index.css */
-@import 'tailwindcss';
+@import "tailwindcss";
 ```
 
 Import `index.css` from your main `js`, `jsx`, `ts`, `tsx` file:
 
 ```js
 /* index.js */
-import './index.css';
+import "./index.css";
 ```
 
-Done, you can use the TailwindCSS in the project! 
+Done, you can use the TailwindCSS in the project!
 
 ## Options
 
-| Name                     | Type              | Default            | Description                                                                                                                                                          |
-| ------------------------ | ----------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `postcssPlugins.prepend` | `PostcssPlugin[]` | `[]`               | Adds custom PostCSS plugins **before** TailwindCSS processing.                                                                                                       |
-| `postcssPlugins.append`  | `PostcssPlugin[]` | `[]`               | Adds custom PostCSS plugins **after** TailwindCSS processing.                                                                                                        |
-| `cssModules.enabled`     | `boolean`         | `false`            | Enables CSS Modules support. When enabled, class names are locally scoped by default, meaning they are unique to the component and won't conflict with other styles. |
-| `cssModules.filter`      | `RegExp`          | `/\.module\.css$/` | A regular expression to detect which files should be processed as CSS Modules.                                                                                       |
-| `cssModules.exclude`     | `RegExp[]`        | `[]`               | An array of regular expressions to exclude specific files or paths from CSS Modules processing.                                                                      |
+| Name                                 | Type              | Default            | Description                                                                                                                                                          |
+| ------------------------------------ | ----------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `postcssPlugins.prepend`             | `PostcssPlugin[]` | `[]`               | Adds custom PostCSS plugins **before** TailwindCSS processing.                                                                                                       |
+| `postcssPlugins.append`              | `PostcssPlugin[]` | `[]`               | Adds custom PostCSS plugins **after** TailwindCSS processing.                                                                                                        |
+| `postcssPlugins.disableAutoprefixer` | `boolean`         | `false`            | Disable the default Autoprefixer plugin applied after TailwindCSS.                                                                                                   |
+| `cssModules.enabled`                 | `boolean`         | `false`            | Enables CSS Modules support. When enabled, class names are locally scoped by default, meaning they are unique to the component and won't conflict with other styles. |
+| `cssModules.filter`                  | `RegExp`          | `/\.module\.css$/` | A regular expression to detect which files should be processed as CSS Modules.                                                                                       |
+| `cssModules.exclude`                 | `RegExp[]`        | `[]`               | An array of regular expressions to exclude specific files or paths from CSS Modules processing.                                                                      |
 
 ## CSS Modules
 
@@ -79,7 +82,7 @@ File `button.module.css`:
 File `button.jsx`:
 
 ```jsx
-import styles from './button.module.css';
+import styles from "./button.module.css";
 
 export const Button = ({ label }) => {
   return <button className={styles.button}>{label}</button>;
@@ -104,7 +107,7 @@ To avoid TypeScript errors when importing CSS, add the types to your global decl
 ```ts
 /* globals.d.ts */
 
-declare module '*.module.css' {
+declare module "*.module.css" {
   const classes: Record<string, string>;
   export default classes;
 }
@@ -117,7 +120,9 @@ Since Bun's bundler API is compatible with esbuild, this module can be used as a
 ```ts
 Bun.build({
   plugins: [
-    tailwindPlugin({ /* pass plugin options here */ }),
-  ]
-})
+    tailwindPlugin({
+      /* options */
+    }),
+  ],
+});
 ```
