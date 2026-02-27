@@ -46,4 +46,4 @@ jobs:
 
       # TODO: switch to `bun publish` once it supports OIDC/provenance
       - name: Publish to NPM
-        run: bunx npm publish --provenance --access public
+        run: npm publish --provenance --access public
