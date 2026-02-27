@@ -1,4 +1,10 @@
 import type { AcceptedPlugin as PostcssPlugin } from 'postcss';
+import type postcssModulesPlugin from 'postcss-modules';
+
+type PostcssModulesOptions = Omit<
+	Parameters<typeof postcssModulesPlugin>[0],
+	'getJSON' | 'globalModulePaths'
+>;
 
 export interface TailwindPluginOptions {
 	/**
@@ -23,5 +29,7 @@ export interface TailwindPluginOptions {
 		filter?: RegExp;
 		/** Regex patterns to exclude files from CSS Modules. */
 		exclude?: RegExp[];
+		/** Options to pass to postcss-modules. `getJSON` and `globalModulePaths` are managed internally. */
+		options?: PostcssModulesOptions;
 	};
 }
