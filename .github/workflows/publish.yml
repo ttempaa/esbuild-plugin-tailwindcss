@@ -39,7 +39,6 @@ jobs:
       - name: Type-check
         run: bun typecheck
 
+      # TODO: switch to `bun publish` once it supports OIDC/provenance
       - name: Publish to NPM
-        env:
-          NPM_CONFIG_TOKEN: ${{ secrets.NPM_CONFIG_TOKEN }}
-        run: bun publish --access public
+        run: bunx npm publish --provenance --access public
