@@ -22,6 +22,7 @@ export const getSetup =
 				enabled: cssModulesEnabled = false,
 				filter: cssModulesFilter = /\.module\.css$/,
 				exclude: cssModulesExclude = [],
+				options: cssModulesOptions = {},
 			} = {},
 		} = options;
 		const namespace = 'tailwindcss-module';
@@ -41,6 +42,7 @@ export const getSetup =
 			if (isCssModule) {
 				plugins.push(
 					postcssModulesPlugin({
+						...cssModulesOptions,
 						globalModulePaths: cssModulesExclude,
 						getJSON: (_, classes) => cache.set(args.path, classes),
 					}),

@@ -65,6 +65,7 @@ Done, you can use the TailwindCSS in the project!
 | `cssModules.enabled`                 | `boolean`         | `false`            | Enables CSS Modules support. When enabled, class names are locally scoped by default, meaning they are unique to the component and won't conflict with other styles. |
 | `cssModules.filter`                  | `RegExp`          | `/\.module\.css$/` | A regular expression to detect which files should be processed as CSS Modules.                                                                                       |
 | `cssModules.exclude`                 | `RegExp[]`        | `[]`               | An array of regular expressions to exclude specific files or paths from CSS Modules processing.                                                                      |
+| `cssModules.options`                 | `object`          | `{}`               | Options to pass to [postcss-modules](https://github.com/madyankin/postcss-modules#usage). `getJSON` and `globalModulePaths` are managed internally.                  |
 
 ## CSS Modules
 
@@ -87,6 +88,20 @@ import styles from "./button.module.css";
 export const Button = ({ label }) => {
   return <button className={styles.button}>{label}</button>;
 };
+```
+
+You can customize postcss-modules behavior using `cssModules.options`:
+
+```js
+tailwindPlugin({
+  cssModules: {
+    enabled: true,
+    options: {
+      generateScopedName: "[name]__[local]___[hash:base64:5]",
+      localsConvention: "camelCaseOnly",
+    },
+  },
+}),
 ```
 
 To make css modules work more correctly, add the main CSS file to the excludes:
