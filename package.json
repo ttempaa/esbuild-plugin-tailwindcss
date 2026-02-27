@@ -28,6 +28,7 @@
 		"lint": "biome check ./source",
 		"lint:fix": "biome check --write ./source",
 		"prepublishOnly": "bun run typecheck && bun run build",
+		"test": "bun test",
 		"typecheck": "tsc --noEmit"
 	},
 	"exports": {
